@@ -1,310 +1,127 @@
+以下是你提供的内容翻译为中文的版本，专有名词和链接保持不变：
+
 # Marker
 
-Marker converts PDF to markdown quickly and accurately.
+Marker 能够快速且准确地将 PDF 转换为 Markdown。
 
-- Supports a wide range of documents (optimized for books and scientific papers)
-- Supports all languages
-- Removes headers/footers/other artifacts
-- Formats tables and code blocks
-- Extracts and saves images along with the markdown
-- Converts most equations to latex
-- Works on GPU, CPU, or MPS
+- 支持广泛的文档类型（针对书籍和科学论文进行了优化）
+- 支持所有语言
+- 移除页眉/页脚/其他杂项
+- 格式化表格和代码块
+- 提取并保存图像与 Markdown 一起
+- 将大多数方程式转换为 LaTeX
+- 在 GPU、CPU 或 MPS 上运行
 
-## How it works
+## 工作原理
 
-Marker is a pipeline of deep learning models:
+Marker 是一系列深度学习模型的管道：
 
-- Extract text, OCR if necessary (heuristics, [surya](https://github.com/VikParuchuri/surya), tesseract)
-- Detect page layout and find reading order ([surya](https://github.com/VikParuchuri/surya))
-- Clean and format each block (heuristics, [texify](https://github.com/VikParuchuri/texify)
-- Combine blocks and postprocess complete text (heuristics, [pdf_postprocessor](https://huggingface.co/vikp/pdf_postprocessor_t5))
+- 提取文本，如有必要进行 OCR（启发式， [surya](https://github.com/VikParuchuri/surya)，tesseract）
+- 检测页面布局并找到阅读顺序（[surya](https://github.com/VikParuchuri/surya)）
+- 清理和格式化每个块（启发式，[texify](https://github.com/VikParuchuri/texify)）
+- 合并块并后处理完整文本（启发式，[pdf_postprocessor](https://huggingface.co/vikp/pdf_postprocessor_t5)）
 
-It only uses models where necessary, which improves speed and accuracy.
+它只在必要时使用模型，从而提高速度和准确性。
 
-## Examples
+## 示例
 
-| PDF                                                                   | Type        | Marker                                                                                                 | Nougat                                                                                                 |
+| PDF                                                                   | 类型        | Marker                                                                                                 | Nougat                                                                                                 |
 |-----------------------------------------------------------------------|-------------|--------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
-| [Think Python](https://greenteapress.com/thinkpython/thinkpython.pdf) | Textbook    | [View](https://github.com/VikParuchuri/marker/blob/master/data/examples/marker/thinkpython.md)         | [View](https://github.com/VikParuchuri/marker/blob/master/data/examples/nougat/thinkpython.md)         |
-| [Think OS](https://greenteapress.com/thinkos/thinkos.pdf)             | Textbook    | [View](https://github.com/VikParuchuri/marker/blob/master/data/examples/marker/thinkos.md)             | [View](https://github.com/VikParuchuri/marker/blob/master/data/examples/nougat/thinkos.md)             |
-| [Switch Transformers](https://arxiv.org/pdf/2101.03961.pdf)           | arXiv paper | [View](https://github.com/VikParuchuri/marker/blob/master/data/examples/marker/switch_transformers.md) | [View](https://github.com/VikParuchuri/marker/blob/master/data/examples/nougat/switch_transformers.md) |
-| [Multi-column CNN](https://arxiv.org/pdf/1804.07821.pdf)              | arXiv paper | [View](https://github.com/VikParuchuri/marker/blob/master/data/examples/marker/multicolcnn.md)         | [View](https://github.com/VikParuchuri/marker/blob/master/data/examples/nougat/multicolcnn.md)         |
+| [Think Python](https://greenteapress.com/thinkpython/thinkpython.pdf) | 教科书      | [查看](https://github.com/VikParuchuri/marker/blob/master/data/examples/marker/thinkpython.md)         | [查看](https://github.com/VikParuchuri/marker/blob/master/data/examples/nougat/thinkpython.md)         |
+| [Think OS](https://greenteapress.com/thinkos/thinkos.pdf)             | 教科书      | [查看](https://github.com/VikParuchuri/marker/blob/master/data/examples/marker/thinkos.md)             | [查看](https://github.com/VikParuchuri/marker/blob/master/data/examples/nougat/thinkos.md)             |
+| [Switch Transformers](https://arxiv.org/pdf/2101.03961.pdf)           | arXiv 论文  | [查看](https://github.com/VikParuchuri/marker/blob/master/data/examples/marker/switch_transformers.md) | [查看](https://github.com/VikParuchuri/marker/blob/master/data/examples/nougat/switch_transformers.md) |
+| [Multi-column CNN](https://arxiv.org/pdf/1804.07821.pdf)              | arXiv 论文  | [查看](https://github.com/VikParuchuri/marker/blob/master/data/examples/marker/multicolcnn.md)         | [查看](https://github.com/VikParuchuri/marker/blob/master/data/examples/nougat/multicolcnn.md)         |
 
-## Performance
+## 性能
 
-![Benchmark overall](data/images/overall.png)
+![基准总体](data/images/overall.png)
 
-The above results are with marker and nougat setup so they each take ~4GB of VRAM on an A6000.
+以上结果是使用 marker 和 nougat 设置，因此它们在 A6000 上各自消耗约 4GB 的 VRAM。
 
-See [below](#benchmarks) for detailed speed and accuracy benchmarks, and instructions on how to run your own benchmarks.
+有关详细的速度和准确性基准，以及如何运行您自己的基准的说明，请参见 [下面](#benchmarks)。
 
-# Commercial usage
+# 商业使用
 
-I want marker to be as widely accessible as possible, while still funding my development/training costs.  Research and personal usage is always okay, but there are some restrictions on commercial usage.
+我希望 Marker 尽可能广泛地可用，同时仍能为我的开发/培训成本提供资金。 研究和个人使用总是可以的，但商业使用有一些限制。
 
-The weights for the models are licensed `cc-by-nc-sa-4.0`, but I will waive that for any organization under $5M USD in gross revenue in the most recent 12-month period AND under $5M in lifetime VC/angel funding raised. You also must not be competitive with the [Datalab API](https://www.datalab.to/).  If you want to remove the GPL license requirements (dual-license) and/or use the weights commercially over the revenue limit, check out the options [here](https://www.datalab.to).
+模型的权重被授权为 `cc-by-nc-sa-4.0`，但我将对最近 12 个月内总收入低于 500 万美元 AND 终生 VC/天使融资低于 500 万美元的任何组织免除该限制。 您也不得与 [Datalab API](https://www.datalab.to/) 竞争。 如果您想移除 GPL 许可证要求（双重许可）和/或在超过收入限制的情况下商业使用权重，请查看 [这里](https://www.datalab.to)。
 
-# Hosted API
+# 托管 API
 
-There's a hosted API for marker available [here](https://www.datalab.to/):
+Marker 的托管 API 可在 [这里](https://www.datalab.to/) 使用：
 
-- Supports PDFs, word documents, and powerpoints 
-- 1/4th the price of leading cloud-based competitors
-- High uptime (99.99%), quality, and speed (.25s/page for 50 page doc)
+- 支持 PDF、Word 文档和 PowerPoint
+- 价格为领先云竞争对手的四分之一
+- 高正常运行时间（99.99%）、质量和速度（每页 0.25 秒，适用于 50 页文档）
 
-# Community
+# 社区
 
-[Discord](https://discord.gg//KuZwXNGnfH) is where we discuss future development.
+[Discord](https://discord.gg//KuZwXNGnfH) 是我们讨论未来发展的地方。
 
-# Limitations
+# 限制
 
-PDF is a tricky format, so marker will not always work perfectly.  Here are some known limitations that are on the roadmap to address:
+PDF 是一种棘手的格式，因此 Marker 并不总是能完美工作。以下是一些已知的限制，正在进行改进：
 
-- Marker will not convert 100% of equations to LaTeX.  This is because it has to detect then convert.
-- Tables are not always formatted 100% correctly - text can be in the wrong column.
-- Whitespace and indentations are not always respected.
-- Not all lines/spans will be joined properly.
-- This works best on digital PDFs that won't require a lot of OCR.  It's optimized for speed, and limited OCR is used to fix errors.
+- Marker 不会将 100% 的方程式转换为 LaTeX。这是因为它必须先检测再转换。
+- 表格并不总是 100% 正确格式化 - 文本可能在错误的列中。
+- 空白和缩进并不总是得到尊重。
+- 并非所有行/跨度都将正确连接。
+- 这对于不需要大量 OCR 的数字 PDF 最有效。它经过速度优化，并使用有限的 OCR 来修复错误。
 
-# Installation
+# 安装
 
-You'll need python 3.9+ and PyTorch.  You may need to install the CPU version of torch first if you're not using a Mac or a GPU machine.  See [here](https://pytorch.org/get-started/locally/) for more details.
+您需要 Python 3.9+ 和 PyTorch。如果您不使用 Mac 或 GPU 机器，可能需要先安装 CPU 版本的 torch。有关详细信息，请参见 [这里](https://pytorch.org/get-started/locally/)。
 
-Install with:
+使用以下命令安装：
 
 ```shell
 pip install marker-pdf
 ```
 
-## Optional: OCRMyPDF
+## 可选：OCRMyPDF
 
-Only needed if you want to use the optional `ocrmypdf` as the ocr backend.  Note that `ocrmypdf` includes Ghostscript, an AGPL dependency, but calls it via CLI, so it does not trigger the license provisions.
+仅在您希望将可选的 `ocrmypdf` 作为 OCR 后端时需要。请注意，`ocrmypdf` 包含 Ghostscript，一个 AGPL 依赖项，但通过 CLI 调用，因此不会触发许可证条款。
 
-See the instructions [here](docs/install_ocrmypdf.md)
+请参见 [这里](docs/install_ocrmypdf.md) 的说明。
 
-# Usage
+# 使用
 
-First, some configuration:
+首先，进行一些配置：
 
-- Inspect the settings in `marker/settings.py`.  You can override any settings with environment variables.
-- Your torch device will be automatically detected, but you can override this.  For example, `TORCH_DEVICE=cuda`.
-- By default, marker will use `surya` for OCR.  Surya is slower on CPU, but more accurate than tesseract.  It also doesn't require you to specify the languages in the document.  If you want faster OCR, set `OCR_ENGINE` to `ocrmypdf`. This also requires external dependencies (see above).  If you don't want OCR at all, set `OCR_ENGINE` to `None`.
-- Some PDFs, even digital ones, have bad text in them.  Set `OCR_ALL_PAGES=true` to force OCR if you find bad output from marker.
+- 检查 `marker/settings.py` 中的设置。您可以通过环境变量覆盖任何设置。
+- 您的 torch 设备将被自动检测，但您可以覆盖此设置。例如，`TORCH_DEVICE=cuda`。
+- 默认情况下，Marker 将使用 `surya` 进行 OCR。Surya 在 CPU 上速度较慢，但比 tesseract 更准确。它还不需要您指定文档中的语言。如果您想要更快的 OCR，请将 `OCR_ENGINE` 设置为 `ocrmypdf`。这也需要外部依赖项（见上文）。如果您根本不想要 OCR，请将 `OCR_ENGINE` 设置为 `None`。
+- 一些 PDF，即使是数字版，文本质量也很差。如果您发现 Marker 的输出有问题，请将 `OCR_ALL_PAGES=true` 设置为强制进行 OCR。
 
-## Interactive App
+## 交互式应用
 
-I've included a streamlit app that lets you interactively try marker with some basic options.  Run it with:
+我包含了一个 Streamlit 应用程序，允许您以一些基本选项与 Marker 进行交互。运行它：
 
 ```shell
 pip install streamlit
 marker_gui
 ```
 
-## Convert a single file
+## 转换单个文件
 
 ```shell
 marker_single /path/to/file.pdf /path/to/output/folder --batch_multiplier 2 --max_pages 10 
 ```
 
-- `--batch_multiplier` is how much to multiply default batch sizes by if you have extra VRAM.  Higher numbers will take more VRAM, but process faster.  Set to 2 by default.  The default batch sizes will take ~3GB of VRAM.
-- `--max_pages` is the maximum number of pages to process.  Omit this to convert the entire document.
-- `--start_page` is the page to start from (default is None, will start from the first page).
-- `--langs` is an optional comma separated list of the languages in the document, for OCR.  Optional by default, required if you use tesseract.
+- `--batch_multiplier` 是指在您有额外 VRAM 时默认批大小的倍数。更高的数字将占用更多 VRAM，但处理更快。默认设置为 2。默认批大小将消耗约 3GB 的 VRAM。
+- `--max_pages` 是要处理的最大页面数。省略此项以转换整个文档。
+- `--start_page` 是要开始的页面（默认值为 None，将从第一页开始）。
+- `--langs` 是文档中语言的可选逗号分隔列表，用于 OCR。默认情况下是可选的，如果您使用 tesseract，则为必需的。
 
-The list of supported languages for surya OCR is [here](https://github.com/VikParuchuri/surya/blob/master/surya/languages.py).  If you need more languages, you can use any language supported by [Tesseract](https://tesseract-ocr.github.io/tessdoc/Data-Files#data-files-for-version-400-november-29-2016) if you set `OCR_ENGINE` to `ocrmypdf`.  If you don't need OCR, marker can work with any language.
+surya OCR 支持的语言列表 [在这里](https://github.com/VikParuchuri/surya/blob/master/surya/languages.py)。如果您需要更多语言，可以使用任何由 [Tesseract](https://tesseract-ocr.github.io/tessdoc/Data-Files#data-files-for-version-400-november-29-2016) 支持的语言（前提是将 `OCR_ENGINE` 设置为 `ocrmypdf`）。如果您不需要 OCR，Marker 可以处理任何语言。
 
-## Convert multiple files
+## 转换多个文件
 
 ```shell
 marker /path/to/input/folder /path/to/output/folder --workers 4 --max 10
 ```
 
-- `--workers` is the number of pdfs to convert at once.  This is set to 1 by default, but you can increase it to increase throughput, at the cost of more CPU/GPU usage.  Marker will use 5GB of VRAM per worker at the peak, and 3.5GB average.
-- `--max` is the maximum number of pdfs to convert.  Omit this to convert all pdfs in the folder.
-- `--min_length` is the minimum number of characters that need to be extracted from a pdf before it will be considered for processing.  If you're processing a lot of pdfs, I recommend setting this to avoid OCRing pdfs that are mostly images. (slows everything down)
-- `--metadata_file` is an optional path to a json file with metadata about the pdfs.  If you provide it, it will be used to set the language for each pdf.  Setting language is optional for surya (default), but required for tesseract. The format is:
-
-```
-{
-  "pdf1.pdf": {"languages": ["English"]},
-  "pdf2.pdf": {"languages": ["Spanish", "Russian"]},
-  ...
-}
-```
-
-You can use language names or codes.  The exact codes depend on the OCR engine.  See [here](https://github.com/VikParuchuri/surya/blob/master/surya/languages.py) for a full list for surya codes, and [here](https://tesseract-ocr.github.io/tessdoc/Data-Files#data-files-for-version-400-november-29-2016) for tesseract.
-
-## Convert multiple files on multiple GPUs
-
-```shell
-METADATA_FILE=../pdf_meta.json NUM_DEVICES=4 NUM_WORKERS=15 marker_chunk_convert ../pdf_in ../md_out
-```
-
-- `METADATA_FILE` is an optional path to a json file with metadata about the pdfs.  See above for the format.
-- `NUM_DEVICES` is the number of GPUs to use.  Should be `2` or greater.
-- `NUM_WORKERS` is the number of parallel processes to run on each GPU.
-- `MIN_LENGTH` is the minimum number of characters that need to be extracted from a pdf before it will be considered for processing.  If you're processing a lot of pdfs, I recommend setting this to avoid OCRing pdfs that are mostly images. (slows everything down)
-
-Note that the env variables above are specific to this script, and cannot be set in `local.env`.
-
-
-## Use from python
-
-See the `convert_single_pdf` function for additional arguments that can be passed.
-
-```python
-from marker.convert import convert_single_pdf
-from marker.models import load_all_models
-
-fpath = "FILEPATH"
-model_lst = load_all_models()
-full_text, images, out_meta = convert_single_pdf(fpath, model_lst)
-```
-
-# Output format
-
-The output will be a markdown file, but there will also be a metadata json file that gives information about the conversion process.  It has these fields:
-
-```json
-{
-    "languages": null, // any languages that were passed in
-    "filetype": "pdf", // type of the file
-    "pdf_toc": [], // the table of contents from the pdf
-    "computed_toc": [], //the computed table of contents
-    "pages": 10, // page count
-    "ocr_stats": {
-        "ocr_pages": 0, // number of pages OCRed
-        "ocr_failed": 0, // number of pages where OCR failed
-        "ocr_success": 0,
-        "ocr_engine": "none"
-    },
-    "block_stats": {
-        "header_footer": 0,
-        "code": 0, // number of code blocks
-        "table": 2, // number of tables
-        "equations": {
-            "successful_ocr": 0,
-            "unsuccessful_ocr": 0,
-            "equations": 0
-        }
-    }
-}
-```
-
-## API server
-
-There is a very simple API server you can run like this:
-
-```shell
-pip install -U uvicorn fastapi python-multipart
-marker_server --port 8001
-```
-
-This will start a fastapi server that you can access at `localhost:8001`.  You can go to `localhost:8001/docs` to see the endpoint options.
-
-Note that this is not a very robust API, and is only intended for small-scale use.  If you want to use this server, but want a more robust conversion option, you can run against the hosted [Datalab API](https://www.datalab.to/plans).  You'll need to register and get an API key, then run:
-
-```shell
-marker_server --port 8001 --api_key API_KEY
-```
-
-Note: This is not the recommended way to use the Datalab API - it's only provided as a convenience for people wrapping the marker repo.  The recommended way is to make a post request to the endpoint directly from your code vs proxying through this server.
-
-You can send requests like this:
-
-```
-import requests
-import json
-
-post_data = {
-    'filepath': 'FILEPATH',
-    # Add other params here
-}
-
-requests.post("http://localhost:8001/marker", data=json.dumps(post_data)).json()
-```
-
-# Troubleshooting
-
-There are some settings that you may find useful if things aren't working the way you expect:
-
-- `OCR_ALL_PAGES` - set this to true to force OCR all pages.  This can be very useful if there is garbled text in the output of marker.
-- `TORCH_DEVICE` - set this to force marker to use a given torch device for inference.
-- `OCR_ENGINE` - can set this to `surya` or `ocrmypdf`.
-- Verify that you set the languages correctly, or passed in a metadata file.
-- If you're getting out of memory errors, decrease worker count (increased the `VRAM_PER_TASK` setting).  You can also try splitting up long PDFs into multiple files.
-
-In general, if output is not what you expect, trying to OCR the PDF is a good first step.  Not all PDFs have good text/bboxes embedded in them.
-
-## Debugging
-
-Set `DEBUG=true` to save data to the `debug` subfolder in the marker root directory.  This will save images of each page with detected layout and text, as well as output a json file with additional bounding box information.
-
-## Useful settings
-
-These settings can improve/change output quality:
-
-- `OCR_ALL_PAGES` will force OCR across the document.  Many PDFs have bad text embedded due to older OCR engines being used.
-- `PAGINATE_OUTPUT` will put a horizontal rule between pages.  Default: False.  The horizontal rule will be `\n\n`, then `{PAGE_NUMBER}`, then 48 single dashes `-`, then `\n\n`.  The separator can be configured via the `PAGE_SEPARATOR` setting.
-- `EXTRACT_IMAGES` will extract images and save separately.  Default: True.
-- `BAD_SPAN_TYPES` specifies layout blocks to remove from the markdown output.
-
-# Benchmarks
-
-Benchmarking PDF extraction quality is hard.  I've created a test set by finding books and scientific papers that have a pdf version and a latex source.  I convert the latex to text, and compare the reference to the output of text extraction methods.  It's noisy, but at least directionally correct.
-
-Benchmarks show that marker is 4x faster than nougat, and more accurate outside arXiv (nougat was trained on arXiv data).  We show naive text extraction (pulling text out of the pdf with no processing) for comparison.
-
-**Speed**
-
-| Method | Average Score | Time per page | Time per document |
-|--------|---------------|---------------|-------------------|
-| marker | 0.613721      | 0.631991      | 58.1432           |
-| nougat | 0.406603      | 2.59702       | 238.926           |
-
-**Accuracy**
-
-First 3 are non-arXiv books, last 3 are arXiv papers.
-
-| Method | multicolcnn.pdf | switch_trans.pdf | thinkpython.pdf | thinkos.pdf | thinkdsp.pdf | crowd.pdf |
-|--------|-----------------|------------------|-----------------|-------------|--------------|-----------|
-| marker | 0.536176        | 0.516833         | 0.70515         | 0.710657    | 0.690042     | 0.523467  |
-| nougat | 0.44009         | 0.588973         | 0.322706        | 0.401342    | 0.160842     | 0.525663  |
-
-Peak GPU memory usage during the benchmark is `4.2GB` for nougat, and `4.1GB` for marker.  Benchmarks were run on an A6000 Ada.
-
-**Throughput**
-
-Marker takes about 4GB of VRAM on average per task, so you can convert 12 documents in parallel on an A6000.
-
-![Benchmark results](data/images/per_doc.png)
-
-## Running your own benchmarks
-
-You can benchmark the performance of marker on your machine. Install marker manually with:
-
-```shell
-git clone https://github.com/VikParuchuri/marker.git
-poetry install
-```
-
-Download the benchmark data [here](https://drive.google.com/file/d/1ZSeWDo2g1y0BRLT7KnbmytV2bjWARWba/view?usp=sharing) and unzip. Then run the overall benchmark like this:
-
-```shell
-python benchmarks/overall.py data/pdfs data/references report.json --nougat
-```
-
-This will benchmark marker against other text extraction methods.  It sets up batch sizes for nougat and marker to use a similar amount of GPU RAM for each.
-
-Omit `--nougat` to exclude nougat from the benchmark.  I don't recommend running nougat on CPU, since it is very slow.
-
-# Thanks
-
-This work would not have been possible without amazing open source models and datasets, including (but not limited to):
-
-- Surya
-- Texify
-- Pypdfium2/pdfium
-- DocLayNet from IBM
-
-Thank you to the authors of these models and datasets for making them available to the community!
+- `--workers` 是同时转换的 PDF 数量。默认设置为 1，但您可以增加它以提高吞吐量，代价是更多的 CPU/GPU 使用。Marker 在峰值时每个工作线程将使用 5GB 的 VRAM，平均使用 3.5GB。
+- `--max` 是要转换的最大 PDF 数量。省略此项以转换文件夹中的所有 PDF。
+- `--min_length` 是提取的 PDF 中需要的最小字符数，才能考虑进行处理。如果您处理大量 PDF，我建议设置此项，以避免 OCR 主要是图像的 PDF（这会减慢一切）。
+- `--metadata_file` 是可选路径，指向包含 PDF 元数据的 JSON 文件。如果提供，将用于为每个 PDF 设置语言。对于 surya（默认），设置语言是可选的，但对于 tesseract
